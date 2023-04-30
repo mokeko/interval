@@ -28,7 +28,9 @@ func NewClosed[T Ordered[T]](v T) Endpoint[T] {
 }
 
 func NewUnbounded[T Ordered[T]]() Endpoint[T] {
-	return Endpoint[T]{
-		Bounded: false,
-	}
+	return Endpoint[T]{}
+}
+
+func (e Endpoint[T]) equalAndBothClosed(e2 Endpoint[T]) bool {
+	return e.Value.Equal(e2.Value) && e.Closed && e2.Closed
 }

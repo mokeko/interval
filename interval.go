@@ -46,18 +46,15 @@ func (i Interval[T]) Overlap(i2 Interval[T]) bool {
 	}
 	if !i.Lower.Bounded || !i2.Upper.Bounded {
 		// i.Upper and i2.Lower are bounded
-		return i2.Lower.Value.LessThan(i.Upper.Value) || (i2.Lower.Value.Equal(i.Upper.Value) && i2.Lower.Closed && i.Upper.Closed)
+		return i2.Lower.Value.LessThan(i.Upper.Value) || i2.Lower.equalAndBothClosed(i.Upper)
 	}
 	if !i.Upper.Bounded || !i2.Lower.Bounded {
 		// i.Lower and i2.Upper are bounded
-		return i.Lower.Value.LessThan(i2.Upper.Value) || (i.Lower.Value.Equal(i2.Upper.Value) && i.Lower.Closed && i2.Upper.Closed)
+		return i.Lower.Value.LessThan(i2.Upper.Value) || i.Lower.equalAndBothClosed(i2.Upper)
 	}
 	// both intervals are bounded in both directions
-	if i.Lower.Value.Equal(i2.Upper.Value) {
-		return i.Lower.Closed && i2.Upper.Closed
-	}
-	if i.Upper.Value.Equal(i2.Lower.Value) {
-		return i.Upper.Closed && i2.Lower.Closed
+	if i.Lower.equalAndBothClosed(i2.Upper) || i2.Lower.equalAndBothClosed(i.Upper) {
+		return true
 	}
 	return i.Lower.Value.LessThan(i2.Upper.Value) && i2.Lower.Value.LessThan(i.Upper.Value)
 }
