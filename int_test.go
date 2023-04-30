@@ -4,6 +4,19 @@ import (
 	"testing"
 )
 
+func TestInt(t *testing.T) {
+	t.Run("NewEndpoint", func(t *testing.T) {
+		testNewEndpoint(t, Int(1))
+	})
+	t.Run("EndpointEqualAndBothClosed", func(t *testing.T) {
+		testEndpointEqualAndBothClosed(t, Int(1), Int(2))
+	})
+	t.Run("NewInterval", func(t *testing.T) {
+		testNewInterval(t, Int(1), Int(2))
+	})
+
+}
+
 func TestIntIsEmpty(t *testing.T) {
 	cases := []struct {
 		name     string
@@ -43,7 +56,7 @@ func TestIntIsEmpty(t *testing.T) {
 			want: false,
 		},
 		{
-			name: "lowe == upper, closed",
+			name: "lowe = upper, closed",
 			interval: NewInterval(
 				NewClosed(Int(1)),
 				NewClosed(Int(1)),
@@ -51,7 +64,7 @@ func TestIntIsEmpty(t *testing.T) {
 			want: false,
 		},
 		{
-			name: "lower == upper, left open",
+			name: "lower = upper, lower open",
 			interval: NewInterval(
 				NewOpen(Int(1)),
 				NewClosed(Int(1)),
@@ -59,7 +72,7 @@ func TestIntIsEmpty(t *testing.T) {
 			want: true,
 		},
 		{
-			name: "lower == upper, right open",
+			name: "lower = upper, upper open",
 			interval: NewInterval(
 				NewClosed(Int(1)),
 				NewOpen(Int(1)),
@@ -67,7 +80,7 @@ func TestIntIsEmpty(t *testing.T) {
 			want: true,
 		},
 		{
-			name: "lower == upper, both open",
+			name: "lower = upper, both open",
 			interval: NewInterval(
 				NewOpen(Int(1)),
 				NewOpen(Int(1)),

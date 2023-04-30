@@ -2,54 +2,54 @@ package interval
 
 import "testing"
 
-func assertEqual[T comparable](t *testing.T, want, got T) {
+func assertEqual(t *testing.T, want, got any) {
 	t.Helper()
 	if want != got {
 		t.Errorf("want %v, got %v", want, got)
 	}
 }
 
-func TestNewEndpoint(t *testing.T) {
+func testNewEndpoint[T Ordered[T]](t *testing.T, v T) {
 	t.Run("open", func(t *testing.T) {
 		assertEqual(
 			t,
-			Endpoint[Int]{
-				Value:   Int(1),
+			Endpoint[T]{
+				Value:   v,
 				Closed:  false,
 				Bounded: true,
 			},
-			NewOpen(Int(1)),
+			NewOpen(v),
 		)
 	})
 	t.Run("closed", func(t *testing.T) {
 		assertEqual(
 			t,
-			Endpoint[Int]{
-				Value:   Int(2),
+			Endpoint[T]{
+				Value:   v,
 				Closed:  true,
 				Bounded: true,
 			},
-			NewClosed(Int(2)),
+			NewClosed(v),
 		)
 	})
 	t.Run("unbounded", func(t *testing.T) {
 		assertEqual(
 			t,
-			Endpoint[Int]{
+			Endpoint[T]{
 				Bounded: false,
 			},
-			NewUnbounded[Int](),
+			NewUnbounded[T](),
 		)
 	})
 }
 
-func TestEqualAndBothClosed(t *testing.T) {
-	unbounded := NewUnbounded[Int]()
-	v1 := Int(1)
-	v2 := Int(2)
+// expect v1 != v2
+func testEndpointEqualAndBothClosed[T Ordered[T]](t *testing.T, v1, v2 T) {
+	unbounded := NewUnbounded[T]()
+
 	cases := []struct {
 		name  string
-		e, e2 Endpoint[Int]
+		e, e2 Endpoint[T]
 		want  bool
 	}{
 		{
