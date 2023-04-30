@@ -12,6 +12,7 @@ func NewInterval[T Ordered[T]](lower, upper Endpoint[T]) Interval[T] {
 	}
 }
 
+// true if no points are contained in interval
 func (i Interval[T]) IsEmpty() bool {
 	if !i.Lower.Bounded || !i.Upper.Bounded {
 		return false
@@ -22,10 +23,12 @@ func (i Interval[T]) IsEmpty() bool {
 	return !i.Lower.equalAndBothClosed(i.Upper)
 }
 
+// true if both endpoints are unbounded
 func (i Interval[T]) IsEntire() bool {
 	return !i.Lower.Bounded && !i.Upper.Bounded
 }
 
+// true if two interval share at least one point
 func (i Interval[T]) Overlap(i2 Interval[T]) bool {
 	// empty interval never overlaps
 	if i.IsEmpty() || i2.IsEmpty() {
