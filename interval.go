@@ -19,11 +19,7 @@ func (i Interval[T]) IsEmpty() bool {
 	if i.Lower.Value.LessThan(i.Upper.Value) {
 		return false
 	}
-	if i.Lower.Value.Equal(i.Upper.Value) {
-		return !(i.Lower.Closed && i.Upper.Closed)
-	}
-	// i.Lower.Value > i.Upper.Value
-	return true
+	return !i.Lower.equalAndBothClosed(i.Upper)
 }
 
 func (i Interval[T]) IsEntire() bool {
