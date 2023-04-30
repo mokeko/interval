@@ -44,7 +44,7 @@ func testNewEndpoint[T Ordered[T]](t *testing.T, v T) {
 }
 
 // expect v1 != v2
-func testEndpointEqualAndBothClosed[T Ordered[T]](t *testing.T, v1, v2 T) {
+func testEqualAndBothClosed[T Ordered[T]](t *testing.T, v1, v2 T) {
 	unbounded := NewUnbounded[T]()
 
 	cases := []struct {
