@@ -14,8 +14,8 @@ type Endpoint[T Ordered[T]] struct {
 	Bounded bool
 }
 
-// NewOpen returns an open endpoint.
-func NewOpen[T Ordered[T]](v T) Endpoint[T] {
+// OpenEp returns an open endpoint.
+func OpenEp[T Ordered[T]](v T) Endpoint[T] {
 	return Endpoint[T]{
 		Value:   v,
 		Closed:  false,
@@ -23,8 +23,8 @@ func NewOpen[T Ordered[T]](v T) Endpoint[T] {
 	}
 }
 
-// NewClosed returns a closed endpoint.
-func NewClosed[T Ordered[T]](v T) Endpoint[T] {
+// ClosedEp returns a closed endpoint.
+func ClosedEp[T Ordered[T]](v T) Endpoint[T] {
 	return Endpoint[T]{
 		Value:   v,
 		Closed:  true,
@@ -32,8 +32,8 @@ func NewClosed[T Ordered[T]](v T) Endpoint[T] {
 	}
 }
 
-// NewUnbounded returns an unbounded endpoint.
-func NewUnbounded[T Ordered[T]]() Endpoint[T] {
+// UnboundedEp returns an unbounded endpoint.
+func UnboundedEp[T Ordered[T]]() Endpoint[T] {
 	return Endpoint[T]{}
 }
 

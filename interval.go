@@ -6,8 +6,8 @@ type Interval[T Ordered[T]] struct {
 	Upper Endpoint[T]
 }
 
-// NewInterval returns an interval with given endpoints.
-func NewInterval[T Ordered[T]](lower, upper Endpoint[T]) Interval[T] {
+// New returns an interval with given endpoints.
+func New[T Ordered[T]](lower, upper Endpoint[T]) Interval[T] {
 	return Interval[T]{
 		Lower: lower,
 		Upper: upper,

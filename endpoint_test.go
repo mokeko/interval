@@ -18,7 +18,7 @@ func testNewEndpoint[T Ordered[T]](t *testing.T, v T) {
 				Closed:  false,
 				Bounded: true,
 			},
-			NewOpen(v),
+			OpenEp(v),
 		)
 	})
 	t.Run("closed", func(t *testing.T) {
@@ -29,7 +29,7 @@ func testNewEndpoint[T Ordered[T]](t *testing.T, v T) {
 				Closed:  true,
 				Bounded: true,
 			},
-			NewClosed(v),
+			ClosedEp(v),
 		)
 	})
 	t.Run("unbounded", func(t *testing.T) {
@@ -38,14 +38,14 @@ func testNewEndpoint[T Ordered[T]](t *testing.T, v T) {
 			Endpoint[T]{
 				Bounded: false,
 			},
-			NewUnbounded[T](),
+			UnboundedEp[T](),
 		)
 	})
 }
 
 // expect v1 != v2
 func testEqualAndBothClosed[T Ordered[T]](t *testing.T, v1, v2 T) {
-	unbounded := NewUnbounded[T]()
+	unbounded := UnboundedEp[T]()
 
 	cases := []struct {
 		name  string
@@ -61,55 +61,55 @@ func testEqualAndBothClosed[T Ordered[T]](t *testing.T, v1, v2 T) {
 		{
 			name: "unbounded, open",
 			e:    unbounded,
-			e2:   NewOpen(v1),
+			e2:   OpenEp(v1),
 			want: false,
 		},
 		{
 			name: "unbounded, closed",
 			e:    unbounded,
-			e2:   NewClosed(v1),
+			e2:   ClosedEp(v1),
 			want: false,
 		},
 		{
 			name: "open, unbounded",
-			e:    NewOpen(v1),
+			e:    OpenEp(v1),
 			e2:   unbounded,
 			want: false,
 		},
 		{
 			name: "open, open",
-			e:    NewOpen(v1),
-			e2:   NewOpen(v1),
+			e:    OpenEp(v1),
+			e2:   OpenEp(v1),
 			want: false,
 		},
 		{
 			name: "open, closed",
-			e:    NewOpen(v1),
-			e2:   NewClosed(v1),
+			e:    OpenEp(v1),
+			e2:   ClosedEp(v1),
 			want: false,
 		},
 		{
 			name: "closed, unbounded",
-			e:    NewClosed(v1),
+			e:    ClosedEp(v1),
 			e2:   unbounded,
 			want: false,
 		},
 		{
 			name: "closed, open",
-			e:    NewClosed(v1),
-			e2:   NewOpen(v1),
+			e:    ClosedEp(v1),
+			e2:   OpenEp(v1),
 			want: false,
 		},
 		{
 			name: "closed, closed, different values",
-			e:    NewClosed(v1),
-			e2:   NewClosed(v2),
+			e:    ClosedEp(v1),
+			e2:   ClosedEp(v2),
 			want: false,
 		},
 		{
 			name: "closed, closed",
-			e:    NewClosed(v1),
-			e2:   NewClosed(v1),
+			e:    ClosedEp(v1),
+			e2:   ClosedEp(v1),
 			want: true,
 		},
 	}
