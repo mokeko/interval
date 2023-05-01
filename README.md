@@ -1,5 +1,7 @@
 # interval
 
+[![codecov](https://codecov.io/gh/mokeko/interval/branch/main/graph/badge.svg?token=G8EH1PG5V4)](https://codecov.io/gh/mokeko/interval)
+
 Determine if two Intervals overlap.
 
 # Installation
