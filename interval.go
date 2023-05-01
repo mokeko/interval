@@ -1,10 +1,12 @@
 package interval
 
+// Interval represents a interval consisting of two endpoints of type T.
 type Interval[T Ordered[T]] struct {
 	Lower Endpoint[T]
 	Upper Endpoint[T]
 }
 
+// NewInterval returns an interval with given endpoints.
 func NewInterval[T Ordered[T]](lower, upper Endpoint[T]) Interval[T] {
 	return Interval[T]{
 		Lower: lower,
@@ -12,7 +14,7 @@ func NewInterval[T Ordered[T]](lower, upper Endpoint[T]) Interval[T] {
 	}
 }
 
-// true if no points are contained in interval
+// True if no points are contained in interval.
 func (i Interval[T]) IsEmpty() bool {
 	if !i.Lower.Bounded || !i.Upper.Bounded {
 		return false
@@ -23,12 +25,12 @@ func (i Interval[T]) IsEmpty() bool {
 	return !i.Lower.equalAndBothClosed(i.Upper)
 }
 
-// true if both endpoints are unbounded
+// True if both endpoints are unbounded.
 func (i Interval[T]) IsEntire() bool {
 	return !i.Lower.Bounded && !i.Upper.Bounded
 }
 
-// true if two interval share at least one point
+// True if two interval share at least one point.
 func (i Interval[T]) Overlap(i2 Interval[T]) bool {
 	// empty interval never overlaps
 	if i.IsEmpty() || i2.IsEmpty() {

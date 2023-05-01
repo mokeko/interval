@@ -5,12 +5,16 @@ type Ordered[T any] interface {
 	LessThan(T) bool
 }
 
+// Endpoint represents an endpoint of an interval.
+// It contains a value and a flag indicating whether it is closed and bounded.
+// The type T must have a order relation.
 type Endpoint[T Ordered[T]] struct {
 	Value   T
 	Closed  bool
 	Bounded bool
 }
 
+// NewOpen returns an open endpoint.
 func NewOpen[T Ordered[T]](v T) Endpoint[T] {
 	return Endpoint[T]{
 		Value:   v,
@@ -19,6 +23,7 @@ func NewOpen[T Ordered[T]](v T) Endpoint[T] {
 	}
 }
 
+// NewClosed returns a closed endpoint.
 func NewClosed[T Ordered[T]](v T) Endpoint[T] {
 	return Endpoint[T]{
 		Value:   v,
@@ -27,6 +32,7 @@ func NewClosed[T Ordered[T]](v T) Endpoint[T] {
 	}
 }
 
+// NewUnbounded returns an unbounded endpoint.
 func NewUnbounded[T Ordered[T]]() Endpoint[T] {
 	return Endpoint[T]{}
 }
