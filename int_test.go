@@ -21,6 +21,6 @@ func TestInt(t *testing.T) {
 		testIsEntire(t, Int(1))
 	})
 	t.Run("Overlap", func(t *testing.T) {
-		testOverlap[Int](t)
+		testOverlap(t, Int(1), Int(2), Int(3), Int(4))
 	})
 }
