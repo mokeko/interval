@@ -25,7 +25,10 @@ func TestTime(t *testing.T) {
 	t.Run("IsEntire", func(t *testing.T) {
 		testIsEntire(t, t1)
 	})
-	t.Run("Overlap", func(t *testing.T) {
-		testOverlap(t, t1, t2, t3, t4)
+	t.Run("ContainsPoint", func(t *testing.T) {
+		testContainsPoint(t, t1, t2, t3)
+	})
+	t.Run("CompareInterval", func(t *testing.T) {
+		testCompareInterval(t, t1, t2, t3, t4)
 	})
 }
