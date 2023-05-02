@@ -30,32 +30,47 @@ func (i Interval[T]) IsEntire() bool {
 	return !i.Lower.Bounded && !i.Upper.Bounded
 }
 
+// True if interval contains given point.
+func (i Interval[T]) ContainsPoint(p T) bool {
+	if i.IsEmpty() {
+		return false
+	}
+	if i.Lower.Bounded && (p.LessThan(i.Lower.Value) || (p.Equal(i.Lower.Value) && !i.Lower.Closed)) {
+		return false
+	}
+	if i.Upper.Bounded && (i.Upper.Value.LessThan(p) || (p.Equal(i.Upper.Value) && !i.Upper.Closed)) {
+		return false
+	}
+	return true
+}
+
+// True if receiver interval ends before argument interval starts.
+func (i Interval[T]) Before(i2 Interval[T]) bool {
+	if i.IsEmpty() || i2.IsEmpty() {
+		return false
+	}
+	if i.Upper.Bounded && i2.Lower.Bounded {
+		return i.Upper.Value.LessThan(i2.Lower.Value) || (i.Upper.Value.Equal(i2.Lower.Value) && (!i.Upper.Closed || !i2.Lower.Closed))
+	}
+	return false
+}
+
+// True if receiver interval starts after argument interval ends.
+func (i Interval[T]) After(i2 Interval[T]) bool {
+	if i.IsEmpty() || i2.IsEmpty() {
+		return false
+	}
+	if i2.Upper.Bounded && i.Lower.Bounded {
+		return i2.Upper.Value.LessThan(i.Lower.Value) || (i2.Upper.Value.Equal(i.Lower.Value) && (!i2.Upper.Closed || !i.Lower.Closed))
+	}
+	return false
+}
+
 // True if two interval share at least one point.
 func (i Interval[T]) Overlap(i2 Interval[T]) bool {
 	// empty interval never overlaps
 	if i.IsEmpty() || i2.IsEmpty() {
 		return false
 	}
-	// entire interval overlaps with any non-empty interval
-	if i.IsEntire() || i2.IsEntire() {
-		return true
-	}
-	// At most 2 of the 4 endpoints are unbounded
-	// If both intervals are unbounded in same direction, they overlap
-	if (!i.Lower.Bounded && !i2.Lower.Bounded) || (!i.Upper.Bounded && !i2.Upper.Bounded) {
-		return true
-	}
-	if !i.Lower.Bounded || !i2.Upper.Bounded {
-		// i.Upper and i2.Lower are bounded
-		return i2.Lower.Value.LessThan(i.Upper.Value) || i2.Lower.equalAndBothClosed(i.Upper)
-	}
-	if !i.Upper.Bounded || !i2.Lower.Bounded {
-		// i.Lower and i2.Upper are bounded
-		return i.Lower.Value.LessThan(i2.Upper.Value) || i.Lower.equalAndBothClosed(i2.Upper)
-	}
-	// both intervals are bounded in both directions
-	if i.Lower.equalAndBothClosed(i2.Upper) || i2.Lower.equalAndBothClosed(i.Upper) {
-		return true
-	}
-	return i.Lower.Value.LessThan(i2.Upper.Value) && i2.Lower.Value.LessThan(i.Upper.Value)
+	return !i.Before(i2) && !i.After(i2)
 }

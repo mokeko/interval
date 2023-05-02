@@ -20,7 +20,10 @@ func TestInt(t *testing.T) {
 	t.Run("IsEntire", func(t *testing.T) {
 		testIsEntire(t, Int(1))
 	})
-	t.Run("Overlap", func(t *testing.T) {
-		testOverlap(t, Int(1), Int(2), Int(3), Int(4))
+	t.Run("ContainsPoint", func(t *testing.T) {
+		testContainsPoint(t, Int(1), Int(2), Int(3))
+	})
+	t.Run("CompareInterval", func(t *testing.T) {
+		testCompareInterval(t, Int(1), Int(2), Int(3), Int(4))
 	})
 }
