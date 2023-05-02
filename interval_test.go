@@ -117,6 +117,12 @@ func testContainsPoint[T Ordered[T]](t *testing.T, v1, v2, v3 T) {
 		want     bool
 	}{
 		{
+			name:     "empty",
+			interval: New(OpenEp(v3), OpenEp(v1)),
+			point:    v2,
+			want:     false,
+		},
+		{
 			name:     "unbounded",
 			interval: New(unbounded, unbounded),
 			point:    v1,
