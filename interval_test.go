@@ -9,8 +9,11 @@ func testNewInterval[T Ordered[T]](t *testing.T, v1, v2 T) {
 	}, New(OpenEp(v1), OpenEp(v2)))
 }
 
-// expect v1 < v2
 func testIsEmpty[T Ordered[T]](t *testing.T, v1, v2 T) {
+	if !v1.LessThan(v2) {
+		t.Fatalf("v1 must be less than v2. v1: %v, v2: %v", v1, v2)
+	}
+
 	unbounded := UnboundedEp[T]()
 	cases := []struct {
 		name     string
@@ -107,8 +110,11 @@ func testIsEntire[T Ordered[T]](t *testing.T, v T) {
 	}
 }
 
-// expect v1 < v2
 func testContains[T Ordered[T]](t *testing.T, v1, v2, v3 T) {
+	if !v1.LessThan(v2) {
+		t.Fatalf("v1 must be less than v2. v1: %v, v2: %v", v1, v2)
+	}
+
 	unbounded := UnboundedEp[T]()
 	cases := []struct {
 		name     string
@@ -233,8 +239,11 @@ func testContains[T Ordered[T]](t *testing.T, v1, v2, v3 T) {
 	}
 }
 
-// expect v1 < v2 < v3 < v4
 func testCompareInterval[T Ordered[T]](t *testing.T, v1, v2, v3, v4 T) {
+	if !(v1.LessThan(v2) && v2.LessThan(v3) && v3.LessThan(v4)) {
+		t.Fatalf("must be v1 < v2 < v3 < v4. got v1=%v, v2=%v, v3=%v, v4=%v", v1, v2, v3, v4)
+	}
+
 	unbounded := UnboundedEp[T]()
 	cases := []struct {
 		name     string
