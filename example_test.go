@@ -7,62 +7,72 @@ import (
 	"github.com/mokeko/interval"
 )
 
-func Example() {
-	// Int
-	{
-		type Int = interval.Int
+func Example_int() {
+	type Int = interval.Int // wrapper type for int
 
-		// [1, 3]
-		i := interval.New(
-			interval.ClosedEp(Int(1)),
-			interval.ClosedEp(Int(3)),
-		)
+	// [1, 3]
+	i := interval.New(
+		interval.ClosedEp(Int(1)),
+		interval.ClosedEp(Int(3)),
+	)
 
-		// (3, +inf)
-		i2 := interval.New(
-			interval.OpenEp(Int(3)),
-			interval.UnboundedEp[Int](),
-		)
+	fmt.Println(i.Contains(Int(2))) // true
 
-		fmt.Println(i.Overlaps(i2)) // false
-	}
-	// Time
-	{
-		type Time = interval.Time
+	// (3, +inf)
+	i2 := interval.New(
+		interval.OpenEp(Int(3)),
+		interval.UnboundedEp[Int](),
+	)
 
-		// [2020-01-01, 2020-01-04]
-		i := interval.New(
-			interval.ClosedEp(Time(time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC))),
-			interval.ClosedEp(Time(time.Date(2020, 1, 4, 0, 0, 0, 0, time.UTC))),
-		)
+	fmt.Println(i.Overlaps(i2)) // false
 
-		// [2020-01-02, 2020-01-03]
-		i2 := interval.New(
-			interval.ClosedEp(Time(time.Date(2020, 1, 2, 0, 0, 0, 0, time.UTC))),
-			interval.ClosedEp(Time(time.Date(2020, 1, 3, 0, 0, 0, 0, time.UTC))),
-		)
+	// Output:
+	// true
+	// false
+}
 
-		fmt.Println(i.Overlaps(i2)) // true
-	}
-	// Custom Type
-	{
-		// [1.0, 2.0)
-		i := interval.New(
-			interval.ClosedEp(ver{1, 0}),
-			interval.OpenEp(ver{2, 0}),
-		)
+func Example_time() {
+	type Time = interval.Time // wrapper type for time.Time
 
-		// [1.5, 2.5)
-		i2 := interval.New(
-			interval.ClosedEp(ver{1, 5}),
-			interval.OpenEp(ver{2, 5}),
-		)
+	// [2020-01-01, 2020-01-04]
+	i := interval.New(
+		interval.ClosedEp(Time(time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC))),
+		interval.ClosedEp(Time(time.Date(2020, 1, 4, 0, 0, 0, 0, time.UTC))),
+	)
 
-		fmt.Println(i.Overlaps(i2)) // true
-	}
+	fmt.Println(i.Contains(Time(time.Date(2020, 1, 5, 0, 0, 0, 0, time.UTC)))) // false
+
+	// [2020-01-02, 2020-01-03]
+	i2 := interval.New(
+		interval.ClosedEp(Time(time.Date(2020, 1, 2, 0, 0, 0, 0, time.UTC))),
+		interval.ClosedEp(Time(time.Date(2020, 1, 3, 0, 0, 0, 0, time.UTC))),
+	)
+
+	fmt.Println(i.Overlaps(i2)) // true
 	// Output:
 	// false
 	// true
+}
+
+func Example_customTypes() {
+	// [1.0, 2.0)
+	i := interval.New(
+		interval.ClosedEp(ver{1, 0}),
+		interval.OpenEp(ver{2, 0}),
+	)
+
+	fmt.Println(i.Contains(ver{2, 0})) // false
+
+	// [1.5, 2.5)
+	i2 := interval.New(
+		interval.ClosedEp(ver{1, 5}),
+		interval.OpenEp(ver{2, 5}),
+	)
+
+	fmt.Println(i.Overlaps(i2)) // true
+
+	// Output:
+	// false
 	// true
 }
 
