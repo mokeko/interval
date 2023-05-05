@@ -43,10 +43,12 @@ func testNewEndpoint[T Ordered[T]](t *testing.T, v T) {
 	})
 }
 
-// expect v1 != v2
 func testEqualAndBothClosed[T Ordered[T]](t *testing.T, v1, v2 T) {
-	unbounded := UnboundedEp[T]()
+	if v1.Equal(v2) {
+		t.Fatalf("v1 and v2 must not be equal. v1: %v, v2: %v", v1, v2)
+	}
 
+	unbounded := UnboundedEp[T]()
 	cases := []struct {
 		name  string
 		e, e2 Endpoint[T]

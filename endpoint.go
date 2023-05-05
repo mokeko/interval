@@ -1,5 +1,6 @@
 package interval
 
+// Ordered is an interface for types that have a order relation.
 type Ordered[T any] interface {
 	Equal(T) bool
 	LessThan(T) bool
