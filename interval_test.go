@@ -599,7 +599,7 @@ func testCompareInterval[T Ordered[T]](t *testing.T, v1, v2, v3, v4 T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			t.Run("overlaps", func(t *testing.T) {
-				assertEqual(t, c.overlaps, c.i.Overlap(c.i2))
+				assertEqual(t, c.overlaps, c.i.Overlaps(c.i2))
 			})
 			t.Run("before", func(t *testing.T) {
 				assertEqual(t, c.before, c.i.Before(c.i2))

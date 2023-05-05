@@ -67,7 +67,7 @@ func (i Interval[T]) After(i2 Interval[T]) bool {
 }
 
 // True if two interval share at least one point.
-func (i Interval[T]) Overlap(i2 Interval[T]) bool {
+func (i Interval[T]) Overlaps(i2 Interval[T]) bool {
 	// empty interval never overlaps
 	if i.IsEmpty() || i2.IsEmpty() {
 		return false
