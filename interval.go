@@ -31,7 +31,7 @@ func (i Interval[T]) IsEntire() bool {
 }
 
 // True if interval contains given point.
-func (i Interval[T]) ContainsPoint(p T) bool {
+func (i Interval[T]) Contains(p T) bool {
 	if i.IsEmpty() {
 		return false
 	}

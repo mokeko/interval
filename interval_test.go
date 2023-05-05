@@ -108,7 +108,7 @@ func testIsEntire[T Ordered[T]](t *testing.T, v T) {
 }
 
 // expect v1 < v2
-func testContainsPoint[T Ordered[T]](t *testing.T, v1, v2, v3 T) {
+func testContains[T Ordered[T]](t *testing.T, v1, v2, v3 T) {
 	unbounded := UnboundedEp[T]()
 	cases := []struct {
 		name     string
@@ -228,7 +228,7 @@ func testContainsPoint[T Ordered[T]](t *testing.T, v1, v2, v3 T) {
 
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			assertEqual(t, c.want, c.interval.ContainsPoint(c.point))
+			assertEqual(t, c.want, c.interval.Contains(c.point))
 		})
 	}
 }
