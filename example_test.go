@@ -46,22 +46,6 @@ func Example() {
 	}
 	// Custom Type
 	{
-		/*
-			// Need to implement Ordered interface.
-			type ver struct {
-				major int
-				minor int
-			}
-
-			func (v ver) Equal(v2 ver) bool {
-				return v == v2
-			}
-
-			func (v ver) LessThan(v2 ver) bool {
-				return v.major < v2.major || (v.major == v2.major && v.minor < v2.minor)
-			}
-		*/
-
 		// [1.0, 2.0)
 		i := interval.New(
 			interval.ClosedEp(ver{1, 0}),

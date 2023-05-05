@@ -1,6 +1,7 @@
+// Package interval provides generic interval types and operations.
 package interval
 
-// Interval represents a interval consisting of two endpoints of type T.
+// Interval represents a interval consisting of two endpoints.
 type Interval[T Ordered[T]] struct {
 	Lower Endpoint[T]
 	Upper Endpoint[T]
@@ -14,7 +15,7 @@ func New[T Ordered[T]](lower, upper Endpoint[T]) Interval[T] {
 	}
 }
 
-// True if no points are contained in interval.
+// IsEmpty returns true if no points are contained in interval.
 func (i Interval[T]) IsEmpty() bool {
 	if !i.Lower.Bounded || !i.Upper.Bounded {
 		return false
@@ -25,12 +26,12 @@ func (i Interval[T]) IsEmpty() bool {
 	return !i.Lower.equalAndBothClosed(i.Upper)
 }
 
-// True if both endpoints are unbounded.
+// IsEntire returns true if both endpoints are unbounded.
 func (i Interval[T]) IsEntire() bool {
 	return !i.Lower.Bounded && !i.Upper.Bounded
 }
 
-// True if interval contains given point.
+// Contains returns true if interval contains the point with given value.
 func (i Interval[T]) Contains(p T) bool {
 	if i.IsEmpty() {
 		return false
@@ -44,7 +45,7 @@ func (i Interval[T]) Contains(p T) bool {
 	return true
 }
 
-// True if receiver interval ends before argument interval starts.
+// Before returns true if interval ends before other interval starts.
 func (i Interval[T]) Before(i2 Interval[T]) bool {
 	if i.IsEmpty() || i2.IsEmpty() {
 		return false
@@ -55,7 +56,7 @@ func (i Interval[T]) Before(i2 Interval[T]) bool {
 	return false
 }
 
-// True if receiver interval starts after argument interval ends.
+// After returns true if interval starts after other interval ends.
 func (i Interval[T]) After(i2 Interval[T]) bool {
 	if i.IsEmpty() || i2.IsEmpty() {
 		return false
@@ -66,7 +67,7 @@ func (i Interval[T]) After(i2 Interval[T]) bool {
 	return false
 }
 
-// True if two interval share at least one point.
+// Overlap returns true if interval shares at least one point with other interval.
 func (i Interval[T]) Overlaps(i2 Interval[T]) bool {
 	// empty interval never overlaps
 	if i.IsEmpty() || i2.IsEmpty() {

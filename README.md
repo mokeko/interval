@@ -3,7 +3,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/mokeko/interval.svg)](https://pkg.go.dev/github.com/mokeko/interval)
 [![codecov](https://codecov.io/gh/mokeko/interval/branch/main/graph/badge.svg?token=G8EH1PG5V4)](https://codecov.io/gh/mokeko/interval)
 
-Determine if two Intervals overlap.
+Generic interval types and operations for Go.
 
 # Installation
 
