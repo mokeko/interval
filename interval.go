@@ -26,6 +26,11 @@ func (i Interval[T]) IsEmpty() bool {
 	return !i.Lower.equalAndBothClosed(i.Upper)
 }
 
+// IsBounded returns true if both endpoints are bounded.
+func (i Interval[T]) IsBounded() bool {
+	return i.Lower.Bounded && i.Upper.Bounded
+}
+
 // IsEntire returns true if both endpoints are unbounded.
 func (i Interval[T]) IsEntire() bool {
 	return !i.Lower.Bounded && !i.Upper.Bounded
