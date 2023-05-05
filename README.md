@@ -28,7 +28,7 @@ i2 := interval.New(
   interval.UnboundedEp[Int](),
 )
 
-fmt.Println(i.Overlap(i2)) // false
+fmt.Println(i.Overlaps(i2)) // false
 ```
 - Time
 ```go
@@ -46,7 +46,7 @@ i2 := interval.New(
   interval.ClosedEp(Time(time.Date(2020, 1, 3, 0, 0, 0, 0, time.UTC))),
 )
 
-fmt.Println(i.Overlap(i2)) // true
+fmt.Println(i.Overlaps(i2)) // true
 ```
 - Other types
 ```go
@@ -77,5 +77,5 @@ i2 := interval.New(
   interval.OpenEp(ver{2, 5}),
 )
 
-fmt.Println(i.Overlap(i2)) // true
+fmt.Println(i.Overlaps(i2)) // true
 ```

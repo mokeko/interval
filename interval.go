@@ -31,7 +31,7 @@ func (i Interval[T]) IsEntire() bool {
 }
 
 // True if interval contains given point.
-func (i Interval[T]) ContainsPoint(p T) bool {
+func (i Interval[T]) Contains(p T) bool {
 	if i.IsEmpty() {
 		return false
 	}
@@ -67,7 +67,7 @@ func (i Interval[T]) After(i2 Interval[T]) bool {
 }
 
 // True if two interval share at least one point.
-func (i Interval[T]) Overlap(i2 Interval[T]) bool {
+func (i Interval[T]) Overlaps(i2 Interval[T]) bool {
 	// empty interval never overlaps
 	if i.IsEmpty() || i2.IsEmpty() {
 		return false
