@@ -2,6 +2,7 @@
 package interval
 
 // Interval represents a interval consisting of two endpoints.
+// The zero value of Interval is an empty interval.
 type Interval[T Ordered[T]] struct {
 	Lower Endpoint[T]
 	Upper Endpoint[T]
