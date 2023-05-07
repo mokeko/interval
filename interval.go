@@ -29,7 +29,7 @@ func (i Interval[T]) IsEmpty() bool {
 
 // IsBounded returns true if both endpoints are bounded.
 func (i Interval[T]) IsBounded() bool {
-	return i.Lower.Bounded && i.Upper.Bounded
+	return i.Lower.Bounded() && i.Upper.Bounded()
 }
 
 // IsEntire returns true if both endpoints are unbounded.
@@ -87,8 +87,8 @@ func (i Interval[T]) StartsBefore(i2 Interval[T]) bool {
 	if i.IsEmpty() || i2.IsEmpty() {
 		return false
 	}
-	if !i.Lower.Bounded || !i2.Lower.Bounded {
-		return !i.Lower.Bounded && i2.Lower.Bounded
+	if i.Lower.Unbounded || i2.Lower.Unbounded {
+		return i.Lower.Unbounded && i2.Lower.Bounded()
 	}
 	return i.Lower.Value.LessThan(i2.Lower.Value) || (i.Lower.Value.Equal(i2.Lower.Value) && i.Lower.Closed && !i2.Lower.Closed)
 }
@@ -98,8 +98,8 @@ func (i Interval[T]) StartsWith(i2 Interval[T]) bool {
 	if i.IsEmpty() || i2.IsEmpty() {
 		return false
 	}
-	if !i.Lower.Bounded || !i2.Lower.Bounded {
-		return !i.Lower.Bounded && !i2.Lower.Bounded
+	if i.Lower.Unbounded || i2.Lower.Unbounded {
+		return i.Lower.Unbounded && i2.Lower.Unbounded
 	}
 	return i.Lower.Value.Equal(i2.Lower.Value) && i.Lower.Closed == i2.Lower.Closed
 }
@@ -109,8 +109,8 @@ func (i Interval[T]) StartsAfter(i2 Interval[T]) bool {
 	if i.IsEmpty() || i2.IsEmpty() {
 		return false
 	}
-	if !i.Lower.Bounded || !i2.Lower.Bounded {
-		return i.Lower.Bounded && !i2.Lower.Bounded
+	if i.Lower.Unbounded || i2.Lower.Unbounded {
+		return i.Lower.Bounded() && i2.Lower.Unbounded
 	}
 	return i2.Lower.Value.LessThan(i.Lower.Value) || (i2.Lower.Value.Equal(i.Lower.Value) && !i.Lower.Closed && i2.Lower.Closed)
 }
@@ -120,8 +120,8 @@ func (i Interval[T]) EndsBefore(i2 Interval[T]) bool {
 	if i.IsEmpty() || i2.IsEmpty() {
 		return false
 	}
-	if !i.Upper.Bounded || !i2.Upper.Bounded {
-		return i.Upper.Bounded && !i2.Upper.Bounded
+	if i.Upper.Unbounded || i2.Upper.Unbounded {
+		return i.Upper.Bounded() && i2.Upper.Unbounded
 	}
 	return i.Upper.Value.LessThan(i2.Upper.Value) || (i.Upper.Value.Equal(i2.Upper.Value) && !i.Upper.Closed && i2.Upper.Closed)
 }
@@ -131,8 +131,8 @@ func (i Interval[T]) EndsWith(i2 Interval[T]) bool {
 	if i.IsEmpty() || i2.IsEmpty() {
 		return false
 	}
-	if !i.Upper.Bounded || !i2.Upper.Bounded {
-		return !i.Upper.Bounded && !i2.Upper.Bounded
+	if i.Upper.Unbounded || i2.Upper.Unbounded {
+		return i.Upper.Unbounded && i2.Upper.Unbounded
 	}
 	return i.Upper.Value.Equal(i2.Upper.Value) && i.Upper.Closed == i2.Upper.Closed
 }
@@ -142,8 +142,8 @@ func (i Interval[T]) EndsAfter(i2 Interval[T]) bool {
 	if i.IsEmpty() || i2.IsEmpty() {
 		return false
 	}
-	if !i.Upper.Bounded || !i2.Upper.Bounded {
-		return !i.Upper.Bounded && i2.Upper.Bounded
+	if i.Upper.Unbounded || i2.Upper.Unbounded {
+		return i.Upper.Unbounded && i2.Upper.Bounded()
 	}
 	return i2.Upper.Value.LessThan(i.Upper.Value) || (i2.Upper.Value.Equal(i.Upper.Value) && i.Upper.Closed && !i2.Upper.Closed)
 }
