@@ -10,32 +10,37 @@ type Ordered[T any] interface {
 // It contains a value and a flag indicating whether it is closed and bounded.
 // The type T must have a order relation.
 type Endpoint[T Ordered[T]] struct {
-	Value   T
-	Closed  bool
-	Bounded bool
+	Value     T
+	Closed    bool
+	Unbounded bool
 }
 
 // OpenEp returns an open endpoint.
 func OpenEp[T Ordered[T]](v T) Endpoint[T] {
 	return Endpoint[T]{
-		Value:   v,
-		Closed:  false,
-		Bounded: true,
+		Value:  v,
+		Closed: false,
 	}
 }
 
 // ClosedEp returns a closed endpoint.
 func ClosedEp[T Ordered[T]](v T) Endpoint[T] {
 	return Endpoint[T]{
-		Value:   v,
-		Closed:  true,
-		Bounded: true,
+		Value:  v,
+		Closed: true,
 	}
 }
 
 // UnboundedEp returns an unbounded endpoint.
 func UnboundedEp[T Ordered[T]]() Endpoint[T] {
-	return Endpoint[T]{}
+	return Endpoint[T]{
+		Unbounded: true,
+	}
+}
+
+// Bounded is just a negation of Unbounded.
+func (e Endpoint[T]) Bounded() bool {
+	return !e.Unbounded
 }
 
 func (e Endpoint[T]) equalAndBothClosed(e2 Endpoint[T]) bool {
