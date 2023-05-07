@@ -14,9 +14,9 @@ func testNewEndpoint[T Ordered[T]](t *testing.T, v T) {
 		assertEqual(
 			t,
 			Endpoint[T]{
-				Value:   v,
-				Closed:  false,
-				Bounded: true,
+				Value:     v,
+				Closed:    false,
+				Unbounded: false,
 			},
 			OpenEp(v),
 		)
@@ -25,9 +25,9 @@ func testNewEndpoint[T Ordered[T]](t *testing.T, v T) {
 		assertEqual(
 			t,
 			Endpoint[T]{
-				Value:   v,
-				Closed:  true,
-				Bounded: true,
+				Value:     v,
+				Closed:    true,
+				Unbounded: false,
 			},
 			ClosedEp(v),
 		)
@@ -36,7 +36,7 @@ func testNewEndpoint[T Ordered[T]](t *testing.T, v T) {
 		assertEqual(
 			t,
 			Endpoint[T]{
-				Bounded: false,
+				Unbounded: true,
 			},
 			UnboundedEp[T](),
 		)
@@ -121,4 +121,9 @@ func testEqualAndBothClosed[T Ordered[T]](t *testing.T, v1, v2 T) {
 			assertEqual(t, c.want, c.e.equalAndBothClosed(c.e2))
 		})
 	}
+}
+
+func TestBounded(t *testing.T) {
+	assertEqual(t, true, Endpoint[Int]{}.Bounded())
+	assertEqual(t, false, Endpoint[Int]{Unbounded: true}.Bounded())
 }
