@@ -65,6 +65,11 @@ func testIsEmpty[T Ordered[T]](t *testing.T, v1, v2 T) {
 			interval: New(OpenEp(v2), OpenEp(v1)),
 			want:     true,
 		},
+		{
+			name:     "zero interval should be empty",
+			interval: Interval[T]{},
+			want:     true,
+		},
 	}
 
 	for _, c := range cases {
