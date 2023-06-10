@@ -27,6 +27,11 @@ func (i Interval[T]) IsEmpty() bool {
 	return !i.Lower.equalAndBothClosed(i.Upper)
 }
 
+// IsBounded returns true if both endpoints are bounded.
+func (i Interval[T]) IsBounded() bool {
+	return i.Lower.Bounded() && i.Upper.Bounded()
+}
+
 // IsEntire returns true if both endpoints are unbounded.
 func (i Interval[T]) IsEntire() bool {
 	return i.Lower.Unbounded && i.Upper.Unbounded
@@ -75,4 +80,95 @@ func (i Interval[T]) Overlaps(i2 Interval[T]) bool {
 		return false
 	}
 	return !i.Before(i2) && !i.After(i2)
+}
+
+// StartsBefore returns true if interval starts before other interval starts.
+func (i Interval[T]) StartsBefore(i2 Interval[T]) bool {
+	if i.IsEmpty() || i2.IsEmpty() {
+		return false
+	}
+	if i.Lower.Unbounded || i2.Lower.Unbounded {
+		return i.Lower.Unbounded && i2.Lower.Bounded()
+	}
+	return i.Lower.Value.LessThan(i2.Lower.Value) || (i.Lower.Value.Equal(i2.Lower.Value) && i.Lower.Closed && !i2.Lower.Closed)
+}
+
+// StartsWith returns true if interval starts with other interval starts.
+func (i Interval[T]) StartsWith(i2 Interval[T]) bool {
+	if i.IsEmpty() || i2.IsEmpty() {
+		return false
+	}
+	if i.Lower.Unbounded || i2.Lower.Unbounded {
+		return i.Lower.Unbounded && i2.Lower.Unbounded
+	}
+	return i.Lower.Value.Equal(i2.Lower.Value) && i.Lower.Closed == i2.Lower.Closed
+}
+
+// StartsAfter returns true if interval starts after other interval starts.
+func (i Interval[T]) StartsAfter(i2 Interval[T]) bool {
+	if i.IsEmpty() || i2.IsEmpty() {
+		return false
+	}
+	if i.Lower.Unbounded || i2.Lower.Unbounded {
+		return i.Lower.Bounded() && i2.Lower.Unbounded
+	}
+	return i2.Lower.Value.LessThan(i.Lower.Value) || (i2.Lower.Value.Equal(i.Lower.Value) && !i.Lower.Closed && i2.Lower.Closed)
+}
+
+// EndsBefore returns true if interval ends before other interval ends.
+func (i Interval[T]) EndsBefore(i2 Interval[T]) bool {
+	if i.IsEmpty() || i2.IsEmpty() {
+		return false
+	}
+	if i.Upper.Unbounded || i2.Upper.Unbounded {
+		return i.Upper.Bounded() && i2.Upper.Unbounded
+	}
+	return i.Upper.Value.LessThan(i2.Upper.Value) || (i.Upper.Value.Equal(i2.Upper.Value) && !i.Upper.Closed && i2.Upper.Closed)
+}
+
+// EndsWith returns true if interval ends with other interval ends.
+func (i Interval[T]) EndsWith(i2 Interval[T]) bool {
+	if i.IsEmpty() || i2.IsEmpty() {
+		return false
+	}
+	if i.Upper.Unbounded || i2.Upper.Unbounded {
+		return i.Upper.Unbounded && i2.Upper.Unbounded
+	}
+	return i.Upper.Value.Equal(i2.Upper.Value) && i.Upper.Closed == i2.Upper.Closed
+}
+
+// EndsAfter returns true if interval ends after other interval ends.
+func (i Interval[T]) EndsAfter(i2 Interval[T]) bool {
+	if i.IsEmpty() || i2.IsEmpty() {
+		return false
+	}
+	if i.Upper.Unbounded || i2.Upper.Unbounded {
+		return i.Upper.Unbounded && i2.Upper.Bounded()
+	}
+	return i2.Upper.Value.LessThan(i.Upper.Value) || (i2.Upper.Value.Equal(i.Upper.Value) && i.Upper.Closed && !i2.Upper.Closed)
+}
+
+// Includes returns true if interval includes other interval.
+func (i Interval[T]) Includes(i2 Interval[T]) bool {
+	return (i.StartsBefore(i2) || i.StartsWith(i2)) && (i.EndsAfter(i2) || i.EndsWith(i2))
+}
+
+// Intersect returns intersection of two intervals.
+// If intervals do not overlap, empty interval is returned.
+func (i Interval[T]) Intersect(i2 Interval[T]) Interval[T] {
+	if i.IsEmpty() || i2.IsEmpty() {
+		return Interval[T]{}
+	}
+	if !i.Overlaps(i2) {
+		return Interval[T]{}
+	}
+	lower := i.Lower
+	if i.StartsBefore(i2) {
+		lower = i2.Lower
+	}
+	upper := i.Upper
+	if i.EndsAfter(i2) {
+		upper = i2.Upper
+	}
+	return New(lower, upper)
 }
