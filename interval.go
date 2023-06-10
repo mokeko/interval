@@ -152,3 +152,23 @@ func (i Interval[T]) EndsAfter(i2 Interval[T]) bool {
 func (i Interval[T]) Includes(i2 Interval[T]) bool {
 	return (i.StartsBefore(i2) || i.StartsWith(i2)) && (i.EndsAfter(i2) || i.EndsWith(i2))
 }
+
+// Intersect returns intersection of two intervals.
+// If intervals do not overlap, empty interval is returned.
+func (i Interval[T]) Intersect(i2 Interval[T]) Interval[T] {
+	if i.IsEmpty() || i2.IsEmpty() {
+		return Interval[T]{}
+	}
+	if !i.Overlaps(i2) {
+		return Interval[T]{}
+	}
+	lower := i.Lower
+	if i.StartsBefore(i2) {
+		lower = i2.Lower
+	}
+	upper := i.Upper
+	if i.EndsAfter(i2) {
+		upper = i2.Upper
+	}
+	return New(lower, upper)
+}
